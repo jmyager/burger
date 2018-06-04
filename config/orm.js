@@ -1,4 +1,4 @@
-connection = require("connection.js");
+connection = require("../config/connection.js");
 
 // Helper function for SQL syntax.
 // Let's say we want to pass 3 values into the mySQL query.
@@ -39,14 +39,14 @@ function objToSql(ob) {
 }
 
 var orm = {
-    selectAll: function (cb) {
-        var queryString = "SELECT * FROM burger;";
-        connection.query(queryString, function (err, res) {
+    selectAll: function (tableInput, cb) {
+        var queryString = "SELECT * FROM " + tableInput + ";";
+        connection.query(queryString, function (err, result) {
             if (err) { throw err };
             cb(result);
         });
     },
-    insertOne: function (val, cb) {
+    insertOne: function (tableInput, val, cb) {
         var queryString = "INSERT INTO burgers (burger_name) VALUES (";
         queryString += val;
         queryString += ");"
@@ -55,7 +55,7 @@ var orm = {
             cb(result);
         });
     },
-    updateOne: function(val, id, cb) {
+    updateOne: function(tableInput, val, id, cb) {
         var queryString = "UPDATE burgers SET burger_name = '";
         queryString += val;
         queryString += "' WHERE id = '"
@@ -68,4 +68,4 @@ var orm = {
     }
 };
 
-module.exports(orm);
+module.exports = orm;
